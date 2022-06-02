@@ -1,0 +1,29 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+flask = "*"
+python-dateutil = "*"
+requests = "*"
+dash = "*"
+pandas = "*"
+plotly = "*"
+numpy = "*"
+holoviews = "*"
+hvplot = "*"
+gunicorn = "*"
+joblib = "*"
+matplotlib = "*"
+
+[dev-packages]
+jupyter = "*"
+ipython = "*"
+awsebcli = "*"
+sphinx-argparse = "*"
+recommonmark = "*"
+sphinx-rtd-theme = "*"
+
+[requires]
+python_version = "3"

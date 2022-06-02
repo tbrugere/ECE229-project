@@ -1,3 +1,15 @@
+docs/
+ #just some test directory i created
+old-data/
+#we should not store the dataset on git
+data/
+#contains my amazon credentials
+.credentials.sh
+
+#bad file creates bugs
+Pipfile.lock
+
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
@@ -127,3 +139,4 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+

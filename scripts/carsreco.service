@@ -1,0 +1,10 @@
+[Unit]
+Description=Cars recommendation server
+
+[Service]
+User=ec2-user
+WorkingDirectory=/home/ec2-user/ECE229
+ExecStart=/bin/bash -lc  "pipenv run gunicorn"
+
+[Install]
+WantedBy=network-online.target
