@@ -9,7 +9,7 @@ $ pip install --user pipenv
 
 ## Building the documentation
 
-TODO but it’s basically
+
 ```console
 $ make docgen
 ```
@@ -81,6 +81,13 @@ $ make get-data
 ```
 
 ## Deploying on production
+
+### With github actions (CI/CD)
+
+If you push the code onto the `deploy` branch on github, it will automatically deploy the code
+on EC2, using github actions.
+
+### Manually
 
 To deploy on the server, simply run on your local host
 (assuming your ssh public key is installed on the EC2 server)
