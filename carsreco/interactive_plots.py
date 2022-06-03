@@ -2,6 +2,7 @@ import numpy as np
 import pandas as pd
 
 import holoviews as hv
+import plotly.express as px
 
 def interactive_plots_preprocess(df):
     """Specific preprocessing for interactive plots.
@@ -195,3 +196,21 @@ def get_price_trendency_given_vals(df, kdim):
     vals = list(set(df.dropna()[kdim].tolist()))
 
     return vals
+
+
+
+def statewise_prices(df):
+    """
+    TODO
+    """
+    p = df.groupby(['state']).mean().price
+    statewise_prices = pd.DataFrame({'states':p.index, 'avg_price':p.values}) 
+    statewise_prices['states'] = statewise_prices['states'].str.upper()
+
+    fig = px.choropleth(statewise_prices, locations='states', locationmode="USA-states",  
+                           color='avg_price',
+                           range_color=(10000, 35000),
+                           scope="usa",
+                           color_continuous_scale="Blues"
+                          )
+    return fig
