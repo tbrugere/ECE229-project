@@ -22,6 +22,7 @@ jobs:
           ssh-add - <<< "${{ secrets.SSH_KEY }}"
           mkdir -p ~/.ssh
           cat >> ~/.ssh/known_hosts <<< "${{ secrets.HOST_KEY }}"
+          cat >> ~/.ssh/config <<< "${{ secrets.SSH_CONFIG }}"
           
     - name: deploy
       env:
