@@ -4,27 +4,6 @@ import pandas as pd
 import holoviews as hv
 import plotly.express as px
 
-def interactive_plots_preprocess(df):
-    """Specific preprocessing for interactive plots.
-
-    Choose the data rows with the year after 2000 and price not equal to 0. Drop some irrelevant cols.
-    Convert the pd.DataFrame to hv.Dataset
-
-    Args:
-        df (pd.DataFrame): Takes in the pd.DataFrame of the dataset
-
-    Returns:
-        hv.Dataset: The hv.Dataset of the dataset after preprocessing
-
-    """
-    assert isinstance(df, pd.DataFrame), "input should be a pandas DataFrame"
-
-    vdims = ['price']
-    kdims = list(df.columns)
-    kdims.remove('price')
-    edata = hv.Dataset(data=df, kdims=kdims, vdims=vdims)
-
-    return edata
 
 def price_trendency_plot(edata, kdim="state"):
     """Holoview curve plot combined with errorbar plot of average price trendency.

@@ -1,5 +1,5 @@
 from .css import *
-from .data import df
+from .data import df, model as p
 from .interactive_plots import get_count_cols, get_price_trendency_cols, \
     get_price_trendency_given_cols, statewise_prices
 
@@ -103,7 +103,7 @@ def dropdown_in(li_in: list) -> html.Div:
     return dd
 
 # THIS IS NOT THE WHOLE LAYOUT BUT THE LAYOUT OF FIRST TAB
-# WHOEVER LIKES REFACTORING RENAME THIS
+# WHOEVER LIKES REFACTORING RENAME THIS TODO
 whole_layout = html.Div(
     style=toplevel_div_style,
     children=[
@@ -116,7 +116,7 @@ whole_layout = html.Div(
             ),
 
             html.Div([
-                html.H3("Average Price Trendency over Time:", style=H3_style),
+                html.H3("Average Price Trend over Time:", style=H3_style),
                 dropdown_plot1
             ],
             style = level2_div_style
@@ -148,3 +148,52 @@ whole_layout = html.Div(
 ]
 )
 
+# THIS IS THE LAYOUT OF THE SECOND TAB
+layout_tab_new = html.Div(
+    children=[
+        html.Div(
+            children=[
+                html.Label('Select your preferred model: ', style=label_style),
+                dcc.Dropdown(
+                    list(p.get_manufacturer_names()),
+                    id='model-dd',
+                    placeholder='Select an attribute...',
+                    style={**dropdown_style, "margin":"auto"}
+                ),
+                html.Label('Select your preferred year range: ', style=label_style), # next available witnin 
+                html.Div(dcc.RangeSlider(
+                    id='year-range-slider',
+                    min=1999,
+                    max=2020,
+                    value=[2005, 2015],
+                    allowCross=False,
+                    marks={int(i):str(i) for i in range(1999, 2020, 5)},
+                    tooltip={"placement": "bottom", "always_visible": True}
+                ),
+                         style=slider_style
+                         ),
+                html.Label('Select your preferred price range ($): ', style=label_style),
+                html.Div(dcc.RangeSlider(
+                    id='price-range-slider',
+                    min=3000,
+                    max=80000,
+                    value=[15000, 25000],
+                    allowCross=False,
+                    tooltip={"placement": "bottom", "always_visible": True}
+                ),
+                         style=slider_style
+                         ),
+            ], 
+            id="preferences-div", 
+            style={**level2_div_style, **container, "justify-content": "center"}
+        ),
+        html.Div(
+            children=[
+                html.H1(children='Recommendation to You', style=H3_style_2),
+                html.Hr(), 
+                html.Div(id='pred-output')
+            ], 
+            style={'textAlign': 'center', 'justify-content': 'center', 'margin-top': '3em'}),
+    ], 
+    style=toplevel_div_style
+)
