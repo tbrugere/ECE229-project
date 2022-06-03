@@ -20,6 +20,7 @@ jobs:
       run: |
           ssh-agent -a $SSH_AUTH_SOCK > /dev/null
           ssh-add - <<< "${{ secrets.SSH_KEY }}"
+          mkdir -p ~/.ssh
           cat >> ~/.ssh/known_hosts <<< "${{ secrets.HOST_KEY }}"
           
     - name: deploy
