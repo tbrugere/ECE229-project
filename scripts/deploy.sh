@@ -3,7 +3,7 @@
 : "${SERVER:=ec2-34-222-231-189.us-west-2.compute.amazonaws.com}" 
 #note that my ssh/config takes care of the rest
 
-: "${REPO:=git@gitlab.com:e4885/ece229-project-gitlab.git}"
+: "${REPO:=https://github.com/nephanth/ECE229-project.git}"
 #note that to clone with ssh, you got to have 
 
 : "${DEPLOYBRANCH:=deploy}"
