@@ -1,35 +1,18 @@
 import numpy as np
 import pandas as pd
-from plot_analysis import preprocess
 from scipy.stats import norm
 from scipy.stats import expon
 
 class IntervalPricePrediction:
-    def __init__(self):
-        self.data_path = 'vehicles_no_url_des_filled.csv'
-        self.df = self.preprocess_data()
+    df: pd.DataFrame
+    model_params: pd.DataFrame
+
+    def __init__(self, df: pd.DataFrame):
+        self.df = df
         self.model_params = self.estimate_parameters()
-    
-    def preprocess_data(self):
-        """Reads the excel file and returns a preprocessed dataframe
 
-        Returns:
-            pd.DataFrame: preprocessed dataframe
-        """    
-        df = preprocess(self.data_path)
-        df.dropna(axis='index', subset=['model'], inplace=True)
 
-        # Ordinal encoding
-        '''title_map = {'missing': 0, 'parts only': 1, 'salvage': 2, 'lien': 3, 'rebuilt': 4, 'clean': 5}
-        df['title_status'] = df['title_status'].map(title_map)
-        size_map = {'sub-compact': 0, 'compact': 1, 'mid-size': 2, 'full-size': 3}
-        df['size'] = df['size'].map(size_map)'''
-
-        # Consider only top 250 frequent models
-        df = df[df['model'].isin(df.groupby('model')['model'].count().sort_values(ascending=False)[:250].index)]
-        return df
-
-    def estimate_parameters(self):
+    def estimate_parameters(self) -> pd.DataFrame:
         """Estimate the parameters of the distributions
         Price given car model_name is modelled as a Gaussian and mean and variance are calculated using MLE
         Time of next post given car model_name is modelled as an exponential distribution and lambda is estimated uisng MLE
@@ -37,7 +20,8 @@ class IntervalPricePrediction:
         Returns:
             pd.DataFrame: Dataframe containing model parameters for each car model_name
         """    
-        model_params = self.df.groupby('model').aggregate({"price": ['mean','std'], "model": 'count', "posting_date":['max','min']})
+        model_params: pd.DataFrame = self.df.groupby('model').aggregate({"price": ['mean','std'], 
+                        "model": 'count', "posting_date":['max','min']}) #type:ignore
         return model_params
 
     def get_CI(self, p1:float, p2:float, alpha=0.95):
