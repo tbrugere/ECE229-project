@@ -1,16 +1,17 @@
 import dash
 import dash_core_components as dcc
 import dash_html_components as html
-from dash.dependencies import Input, Output
+from dash.dependencies import Input, Output, State
 import pandas as pd
 import numpy as np
 import plotly.express as px
+from dash_table.Format import Sign
 from . import prediction
 
 external_stylesheets = ['assets/style.css'] #https://codepen.io/chriddyp/pen/bWLwgP.css
 app = dash.Dash(__name__, external_stylesheets=external_stylesheets) #external_stylesheets=external_stylesheets
 
-#app.scripts.config.serve_locally = True
+# app.scripts.config.serve_locally = True
 
 app.config['suppress_callback_exceptions'] = True
 
@@ -105,8 +106,7 @@ app.layout = html.Div(
     html.Div(id='tabs-content')
 ])
 
-df = pd.read_csv('data/preprocessed.csv', index_col=0, parse_dates=["posting_date"])
-
+df: pd.DataFrame = pd.read_csv('data/preprocessed.csv', header=0, index_col=0)#type: ignore
 cats, nums = df.select_dtypes(['object', 'category']).columns, df.select_dtypes(np.number).columns
 
 def plot_pie(col, lim = 15):

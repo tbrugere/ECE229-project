@@ -87,23 +87,111 @@ def count_plot(df, kdim="manufacturer", lim=15):
 
     return bars
     
-def price_tredency_plot_given(edata, kdim):
+from dash_table.Format import Sign
+    
+def price_tredency_plot_given(edata, kdim1="state", kdim2="CA"):
     """Holoview curve plot combined with pulldown widget of average price trendency of year given the k-dimension.
 
     Aggregate the data given the k-dimension and 'year'. Generate the curve plot with the pulldown widget.
 
     Args:
-        edata (hv.Dataset): The hv.Dataset of the dataset
-        kdim (str): The key-dimension
+        arg1 (hv.Dataset): The hv.Dataset of the dataset
+        arg2 (str): The key-dimension
 
     Returns:
-        hv.core.spaces.HoloMap: The holoview curve plot with the pulldown widget
+        hv.element.chart.Curve: The holoview curve plot
 
     """
-    assert isinstance(kdim, str), "Please input your interested key dimension as string"
+    assert isinstance(kdim1, str), "Please input your interested key dimension as string"
+    assert isinstance(kdim2, str), "Please input your interested key value as string"
 
     edata = edata[(edata['year']>=2000) & (edata['year']<=2021)]
-    agg = edata.aggregate(['year', kdim], function=np.mean).sort()
-    plot = agg.to(hv.Curve, 'year', 'price', groupby=kdim).options(width=600,height=300, title='Average Price Fluctuation over year given %s' % kdim)
+    edata = edata[edata[kdim1] == kdim2]
+
+    agg = edata.aggregate('year', function=np.mean, spreadfn=np.std).sort()
+    plot = hv.Curve(agg).opts(width=1000, height=450)
 
     return plot
+
+
+def get_count_cols(df):
+    """Get the columns for the count plot.
+
+    Select the columns with object and category data types and return them as a list.
+
+    Args:
+        df (pd.DataFrame): The pd.DataFrame of the dataset
+
+    Returns:
+        List: The columns for the count plot
+
+    """
+
+    cols = list(df.select_dtypes(['object', 'category']).columns)
+
+    return cols
+
+
+def get_price_trendency_cols(df):
+    """Get the columns for the price trendency plot.
+
+    Select the columns with object and category data types and return them as a list.
+
+    Args:
+        df (pd.DataFrame): The pd.DataFrame of the dataset
+
+    Returns:
+        List: The columns for the count plot
+
+    """
+    cols = list(df.columns)
+    cols.remove('price')
+    cols.remove('region')
+    cols.remove('model')
+    cols.remove('posting_date')
+    cols.remove('posting_year')
+    cols.remove('posting_month')
+
+    return cols
+
+def get_price_trendency_given_cols(df):
+    """Get the columns for the price trendency plot.
+
+    Select the columns with object and category data types and return them as a list.
+
+    Args:
+        df (pd.DataFrame): The pd.DataFrame of the dataset
+
+    Returns:
+        List: The columns for the count plot
+
+    """
+    cols = list(df.columns)
+    cols.remove('price')
+    cols.remove('year')
+    cols.remove('region')
+    cols.remove('model')
+    cols.remove('posting_date')
+    cols.remove('posting_year')
+    cols.remove('posting_month')
+
+    return cols
+
+
+def get_price_trendency_given_vals(df, kdim):
+    """Get the values of the sepcific key-dimension
+
+    Given the columns, get all values in this columns and return as a list.
+
+    Args:
+        df (pd.DataFrame): The pd.DataFrame of the dataset
+        kim (str): The key-dimension
+
+    Returns:
+        list: The values given the specific cols
+
+    """
+
+    vals = list(set(df.dropna()[kdim].tolist()))
+
+    return vals
