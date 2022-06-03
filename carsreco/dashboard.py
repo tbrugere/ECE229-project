@@ -11,8 +11,8 @@ import numpy as np
 import pandas as pd
 import plotly.express as px
 
-from .data import df
-from .interactive_plots import interactive_plots_preprocess, price_trendency_plot, count_plot, price_tredency_plot_given,  get_price_trendency_given_vals
+from .data import df, model as p, edata, cats, nums
+from .interactive_plots import price_trendency_plot, count_plot, price_tredency_plot_given,  get_price_trendency_given_vals
 from . import prediction
 from .layout import *
 from .wikipedia_api import WikipediaPage
@@ -24,12 +24,6 @@ app.config['suppress_callback_exceptions'] = True
 
 app.layout = full_layout
 
-#------------------------------------------------------------------------------------
-# PREPROCESSING
-#------------------------------------------------------------------------------------
-edata = interactive_plots_preprocess(df)
-cats, nums = df.select_dtypes(['object', 'category']).columns, df.select_dtypes(np.number).columns
-p = prediction.IntervalPricePrediction(df)
 
 def plot_pie(col, lim = 15):
     """Plots the pie chart of the categorical variable col.
@@ -133,42 +127,6 @@ def text_image(lisa,urll,i):
     return html.H1('Manufacturer name: ' + lisa[i][0] + ", Model name: " + str(lisa[i][1]) + ", Find it at market in  " + str(lisa[i][3:]) + " hrs",
             style={'color': '#b8bbbe', 'font-size': '24px', 'font-family': 'Optima, sans-serif','font-weight':'bold'}), html.Img(src=urll[i], style={'height': '40%', 'width': '40%'})
 
-layout_tab_new = html.Div(children=[
-    html.Label('Select your preferred model: ', style=label_style),
-    html.Div(dcc.Dropdown(list(p.get_manufacturer_names()),
-                          id='model-dd', placeholder='Select an attribute...', style={'width': '60%'}
-                          ),
-             style={'float': 'center', 'justify-content': 'center','margin-left':'40em'}
-             ),
-
-    html.Label('Select your preferred year range: ', style=label_style), # next available witnin 
-    html.Div(dcc.RangeSlider(
-        id='year-range-slider',
-        min=1999,
-        max=2020,
-        value=[2005, 2015],
-        allowCross=False,
-        marks={int(i):str(i) for i in range(1999, 2020, 5)},
-        tooltip={"placement": "bottom", "always_visible": True}
-    ),
-        style={'width': '50%','float': 'center','justify-content': 'center', 'margin-top': '2em', 'margin-left':'25em'}
-    ),
-    html.Label('Select your preferred price range ($): ', style=label_style),
-    html.Div(dcc.RangeSlider(
-        id='price-range-slider',
-        min=3000,
-        max=80000,
-        value=[15000, 25000],
-        allowCross=False,
-        tooltip={"placement": "bottom", "always_visible": True}
-    ),
-        style={'width': '50%', 'float': 'center','justify-content': 'center','margin-top': '2em', 'margin-left':'25em'}
-    ),
-    html.Div(children=[
-        html.H1(children='- - - - - - - - - - - - - - - Recommendation to You - - - - - - - - - - - - - - -', style=H3_style_2),
-        html.Div(id='pred-output')
-    ], style={'textAlign': 'center', 'justify-content': 'center', 'margin-top': '3em'}),
-])
 
 @app.callback(
     Output('pred-output', 'children'),

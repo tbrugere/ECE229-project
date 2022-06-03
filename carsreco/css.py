@@ -1,3 +1,5 @@
+full_width={"width": "100%"}
+
 colors = {
     'background': '#111111',
     'text': '#7FDBFF'
@@ -83,6 +85,8 @@ sorry_style = {
     'text-align': 'center',
 }
 
+slider_style = {'width': '50%','float': 'center', 'margin-top': '2em', "margin":"auto"}
+
 dropdown_style = {'float': 'center','width': '50%', "align":"left"}
 
 plot_style = {
@@ -98,4 +102,5 @@ toplevel_div_style = {'margin-left':'2em', 'margin-right':'2em', **container}
 level2_div_style = {"width": "100%"}
 level3_div_style = {"width": "100%"}
 plot_div_style = {"width": "100%"}
+
 
