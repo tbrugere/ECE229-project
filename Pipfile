@@ -16,6 +16,7 @@ hvplot = "*"
 gunicorn = "*"
 joblib = "*"
 matplotlib = "*"
+scipy = "*"
 
 [dev-packages]
 jupyter = "*"
@@ -24,6 +25,7 @@ awsebcli = "*"
 sphinx-argparse = "*"
 recommonmark = "*"
 sphinx-rtd-theme = "*"
+pytest = "*"
 
 [requires]
 python_version = "3"
