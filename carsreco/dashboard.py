@@ -1,113 +1,35 @@
+"""
+This file contains the web application logic
+"""
 import dash
 import dash_core_components as dcc
 import dash_html_components as html
 from dash.dependencies import Input, Output
-import pandas as pd
+import holoviews as hv
+from holoviews.plotting.plotly.dash import to_dash
 import numpy as np
+import pandas as pd
 import plotly.express as px
+
+from .data import df
+from .interactive_plots import interactive_plots_preprocess, price_trendency_plot, count_plot, price_tredency_plot_given,  get_price_trendency_given_vals
 from . import prediction
+from .layout import *
+from .wikipedia_api import WikipediaPage
 
 external_stylesheets = ['assets/style.css'] #https://codepen.io/chriddyp/pen/bWLwgP.css
 app = dash.Dash(__name__, external_stylesheets=external_stylesheets) #external_stylesheets=external_stylesheets
 
-#app.scripts.config.serve_locally = True
-
 app.config['suppress_callback_exceptions'] = True
 
-colors = {
-    'background': '#111111',
-    'text': '#7FDBFF'
-}
-tab_style = {
-    'borderTop': '1px solid #292841',
-    'borderBottom': '1px solid #292841',
-    'borderLeft': '1px solid #bcbfc2',
-    'borderRight': '1px solid #bcbfc2',
-    'fontWeight': 'bold',
-    'font-size': '20px',
-    'font-family': 'Optima, sans-serif',
-    'color': '#b8bbbe',
-    'backgroundColor': '#292841',
-    'padding': '8px',
-}
+app.layout = full_layout
 
-tab_selected_style = {
-    'borderTop': '2px solid #bed2ff',
-    'borderBottom': '1px solid #292841',
-    'borderLeft': '1px solid #bcbfc2',
-    'borderRight': '1px solid #bcbfc2',
-    'backgroundColor': '#292841',
-    'color': 'white',
-    'font-size': '22px',
-    'font-family': 'Optima, sans-serif',
-    'font-weight': 'bold',
-    'padding': '8px',
-}
-
-H3_style = {
-    'font-family': 'Optima, sans-serif',
-    'font-size': '28px',
-    'color': '#bed2ff',
-    'font-weight': 'bold',
-    'float': 'center',
-    'text-align': 'center',
-    'margin-top': '1em',
-    # 'margin-bottom': '1em',
-}
-
-H3_style_2 = {
-    'font-family': 'Optima, sans-serif',
-    'font-size': '48px',
-    'color': '#bed2ff',
-    'font-weight': 'bold',
-    'float': 'center',
-    'text-align': 'center',
-    'margin-top': '2em',
-    # 'margin-bottom': '1em',
-}
-
-label_style = {
-    'font-family': 'Optima, sans-serif',
-    'font-size': '24px',
-    'color': '#bed2ff',
-    'font-weight': 'bold',
-    'float': 'bottom',
-    # 'margin-left': '1em',
-    'margin-top': '1em',
-    'margin-bottom': '0.5em',
-    'text-align': 'center',
-}
-
-sorry_style = {
-    'font-family': 'Optima, sans-serif',
-    'font-size': '24px',
-    'color': '#fea78a',
-    'font-weight': 'bold',
-    'float': 'bottom',
-    # 'margin-left': '1em',
-    'margin-top': '1em',
-    'margin-bottom': '3em',
-    'text-align': 'center',
-}
-
-app.layout = html.Div(
-    children = [
-    html.H1("Used Car Sales Recommendation Dashboard", style={'text-align': 'center', 'font-family': 'Optima, sans-serif',
-                                                              'padding-top': '0.4em', 'padding-bottom': '0.4em',
-                                                              'margin-top': '0em', 'margin-bottom': '0em',
-                                                              'font-weight': 'bold', 'color': '#bed2ff', 'font-size': '40px',
-                                                              'backgroundColor':'#292841'}), #bed2ff, 2ddfb3
-    dcc.Tabs(id="tabs", value='tab-1', style={'margin-top': '0em', 'margin-bottom': '0em'},
-        children=[
-        dcc.Tab(label='Cars Sales Information & Trends', value='tab-1', style=tab_style, selected_style=tab_selected_style),
-        dcc.Tab(label='Find Your Dream Car!', value='tab-new', style=tab_style, selected_style=tab_selected_style),
-    ]),
-    html.Div(id='tabs-content')
-])
-
-df = pd.read_csv('data/preprocessed.csv', index_col=0, parse_dates=["posting_date"])
-
+#------------------------------------------------------------------------------------
+# PREPROCESSING
+#------------------------------------------------------------------------------------
+edata = interactive_plots_preprocess(df)
 cats, nums = df.select_dtypes(['object', 'category']).columns, df.select_dtypes(np.number).columns
+p = prediction.IntervalPricePrediction(df)
 
 def plot_pie(col, lim = 15):
     """Plots the pie chart of the categorical variable col.
@@ -131,31 +53,7 @@ def plot_pie(col, lim = 15):
 
     return fig
 
-def statewise_prices(df):
-    """
-    
-    """
-    p = df.groupby(['state']).mean().price
-    statewise_prices = pd.DataFrame({'states':p.index, 'avg_price':p.values}) 
-    statewise_prices['states'] = statewise_prices['states'].str.upper()
-
-    fig = px.choropleth(statewise_prices, locations='states', locationmode="USA-states",  
-                           color='avg_price',
-                           range_color=(10000, 35000),
-                           scope="usa",
-                           color_continuous_scale="Blues"
-                          )
-    return fig
 #***************************** DropDown
-
-from .interactive_plots import interactive_plots_preprocess, price_trendency_plot, count_plot, price_tredency_plot_given, get_count_cols, get_price_trendency_cols, get_price_trendency_given_cols, get_price_trendency_given_vals
-import holoviews as hv
-from holoviews.plotting.plotly.dash import to_dash
-
-li1 = get_price_trendency_cols(df)
-li2 = get_count_cols(df)
-li_out = get_price_trendency_given_cols(df)
-edata = interactive_plots_preprocess(df)
 
 def dropdown_select(k):
     components = to_dash(app, [price_trendency_plot(edata, k)])
@@ -183,12 +81,6 @@ def dropdown_given(k1, k2):
 ### DropDown ###
 
 
-dropdown_plot1 = html.Div(children =[
-    dcc.Dropdown(li1, 
-        id='dd-input1', placeholder='Select an attribute...', style={'float': 'center','width': '50%'}),
-    html.Div(children =[
-        html.Div(id='dd-output1',style={'float': 'center', 'height': 430,'width': 1200, 'justify-content': 'center'})]),],
-    style={'margin-left': '8em', 'float': 'center', 'justify-content': 'center'})
 
 @app.callback(
     Output('dd-output1', 'children'),
@@ -200,13 +92,6 @@ def update_output(value):
     return dropdown_select(value)
 
 
-dropdown_plot2 = html.Div(children =[
-    dcc.Dropdown(li2, 
-        id='dd-input2', placeholder='Select an attribute...', style={'width': '50%'}),
-    html.Div(children =[
-        html.Div(id='dd-output2',style={'float': 'center', 'height': 900,'width': 800, 'justify-content': 'center'}),
-        ]),],
-    style={'float': 'center', 'justify-content': 'center', 'margin-left':'21em'})
 
 @app.callback(
     Output('dd-output2', 'children'),
@@ -218,15 +103,6 @@ def update_output(value):
     return dropdown_count(value)
 
 
-def dropdown_in(attri):
-    li_in = get_price_trendency_given_vals(df, attri)
-    dd = html.Div(children =[
-        dcc.Dropdown(li_in, 
-            id='dd-input-in', placeholder='Select an attribute...', style={'width': '80%', 'margin-left': '3.5em'}),
-        html.Div(children =[
-            html.Div(id='dd-output-in',style={'height': 490,'width': 900, 'float': 'center', 'display': 'flex', 'justify-content': 'center'})]),],
-        style={'float': 'center', 'justify-content': 'center'})
-    return dd
 
 @app.callback(
     Output('dd-output-in', 'children'),
@@ -240,56 +116,19 @@ def update_output(value_in, value_out):
         return dropdown_given(value_out, get_price_trendency_given_vals(df, value_out)[0])
     return dropdown_given(value_out, value_in)
 
-dropdown_out = html.Div(children =[
-    dcc.Dropdown(li_out, 
-        id='dd-input-out', placeholder='Select an attribute...', style={'width': '60%', 'margin-left': '12.7em'}),
-    html.Div(children =[
-        html.Div(id='dd-output-out',style={'float': 'center', 'display': 'flex', 'justify-content': 'center'})]),
-    ],
-    style={'float': 'center', 'justify-content': 'center'})
-
 @app.callback(
     Output('dd-output-out', 'children'),
     Input('dd-input-out', 'value')
 )
 def update_output(value):
     if not value:
-        return dropdown_in('state')
-    return dropdown_in(value)
+        value = "state"
+    li_in = get_price_trendency_given_vals(df, value)
+    return dropdown_in(li_in)
 
 
-whole_layout = html.Div(style={'margin-left':'2em', 'margin-right':'2em'},
-    children =[
-        html.Div([
-            html.Div([
-                html.H3("The Market Share Overview:", style=H3_style),
-                dropdown_plot2,
-            ]),
-
-            html.Div([
-                html.H3("Average Price Trendency over Time:", style=H3_style),
-                dropdown_plot1,
-            ]),
-
-            html.Div([
-                html.H3("Average Price Across States:", style=H3_style),
-                html.Div(children =[
-                    dcc.Graph(
-                    id = "marital prob",
-                    figure = statewise_prices(df),
-                    style={'height': 450,'width': 800, 'justify-content': 'center'}
-                )],
-            style={'height': 480, 'float': 'center', 'display': 'flex', 'justify-content': 'center'}),
-            ]),
-
-            html.H3("Explore the Price Fluctuation of Your Interest:", style=H3_style),
-            dropdown_out,
-        ]),
-    ])
 
 
-p = prediction.IntervalPricePrediction(df)
-from .wikipedia_api import WikipediaPage
 def text_image(lisa,urll,i):
     return html.H1('Manufacturer name: ' + lisa[i][0] + ", Model name: " + str(lisa[i][1]) + ", Find it at market in  " + str(lisa[i][3:]) + " hrs",
             style={'color': '#b8bbbe', 'font-size': '24px', 'font-family': 'Optima, sans-serif','font-weight':'bold'}), html.Img(src=urll[i], style={'height': '40%', 'width': '40%'})
