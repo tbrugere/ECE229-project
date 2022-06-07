@@ -12,7 +12,7 @@ from carsreco import prediction
 
 @pytest.fixture()
 def setup():
-    """Tests the functionality of estimate_parameters.
+    """Creates the mock dataframe for setup.
     """
     mock_df =  pd.DataFrame(columns=['model','manufacturer','price','posting_date'],
                             data =[['camry', 'abc',10000, '2021-05-04 17:30:00'],
