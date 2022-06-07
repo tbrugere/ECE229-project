@@ -1,7 +1,9 @@
-''' This file tests the functions in predction.py
+'''
+This file tests the functions in predction.py
 To generate a html coverage report, run
 pytest --cov-report html:cov_html
-        --cov=carsreco'''
+        --cov=carsreco
+'''
 import pytest
 import numpy as np
 import pandas as pd
