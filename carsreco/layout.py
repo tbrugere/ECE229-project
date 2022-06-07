@@ -102,8 +102,6 @@ class Layout():
         dropdown_out = dropdown_and_plot(li_out, "-out")
 
 
-        # THIS IS NOT THE WHOLE LAYOUT BUT THE LAYOUT OF FIRST TAB
-        # WHOEVER LIKES REFACTORING RENAME THIS TODO
         self.tab_1 = html.Div(
             style=toplevel_div_style,
             children=[
