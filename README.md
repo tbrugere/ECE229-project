@@ -9,6 +9,7 @@ $ pip install --user pipenv
 
 ## Building the documentation
 
+To build the documentation with `sphinx`, use the command
 
 ```console
 $ make docgen
