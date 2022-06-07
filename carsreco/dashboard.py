@@ -22,7 +22,9 @@ app = dash.Dash(__name__, external_stylesheets=external_stylesheets) #external_s
 
 app.config['suppress_callback_exceptions'] = True
 
-app.layout = full_layout
+layout = Layout(df, p)
+
+app.layout = layout.full_layout
 
 
 def plot_pie(col, lim = 15):
@@ -118,8 +120,8 @@ def update_output(value):
     if not value:
         value = "state"
     li_in = get_price_trendency_given_vals(df, value)
-    return dropdown_in(li_in)
-
+    drop = dropdown_and_plot(li_in, "-in")
+    return drop
 
 
 
@@ -163,9 +165,9 @@ def show_success_probability(model,year,price):
               [Input('tabs', 'value')])
 def render_content(tab):
     if tab == 'tab-1':
-        return whole_layout
+        return layout.tab_1
     elif tab == "tab-new":
-        return layout_tab_new
+        return layout.tab_2
 
 server = app.server
 
