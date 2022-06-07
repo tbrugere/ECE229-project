@@ -2,9 +2,9 @@
 This module contains the (html) layout of the application. It also contains helper functions
 used to generate the dynamic layout of the application.
 
-This module does not contain the plots definitions, those are created in the :module:`carsreco.interactive_plots` module.
+This module does not contain the plots definitions, those are created in the :mod:`carsreco.interactive_plots` module.
 
-It also does not contan the application logic, this is contained in :module:`carsreco.dashboard`
+It also does not contan the application logic, this is contained in :mod:`carsreco.dashboard`
 """
 
 from __future__ import annotations

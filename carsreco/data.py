@@ -1,3 +1,11 @@
+"""
+This module contains the function used to load the dataframe
+It also contains functions used to do light preprocessing at startup of the application.
+
+Note that the more heaviweight preprocessing is done by the :mod:`scripts.preprocessing`
+script, which is run during deployment
+"""
+
 from __future__ import annotations
 
 import holoviews as hv

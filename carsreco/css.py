@@ -1,3 +1,10 @@
+"""
+This module contains the style dictionaries that are converted to actuall css by dash.
+
+They are used in :mod:`carsreco.layout`
+"""
+
+
 full_width={"width": "100%"}
 
 colors = {
