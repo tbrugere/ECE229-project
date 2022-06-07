@@ -1,3 +1,6 @@
+"""
+Script to display interactive plots on the dashboard.
+"""
 import numpy as np
 import pandas as pd
 
@@ -180,7 +183,13 @@ def get_price_trendency_given_vals(df, kdim):
 
 def statewise_prices(df):
     """
-    TODO
+    Calculates the average price for each state (US only).
+
+    Args:
+        df (pd.DataFrame): The pd.DataFrame of the dataset.
+
+    Returns:
+        px.choropleth: A plot of the statewide price averages.
     """
     p = df.groupby(['state']).mean().price
     statewise_prices = pd.DataFrame({'states':p.index, 'avg_price':p.values}) 
