@@ -15,6 +15,9 @@ on:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
+  permissions:
+    id-token: write
+    contents: read
   # This workflow contains a single job called "build"
   tests:
     # The type of runner that the job will run on
@@ -30,9 +33,6 @@ jobs:
       with:
         role-to-assume: arn:aws:iam::168324251207:role/GithubActions
         aws-region: us-west-1
-      permissions:
-        id-token: write
-        contents: read
     - name: run those tests
       run:
         make run-tests
