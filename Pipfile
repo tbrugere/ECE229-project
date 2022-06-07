@@ -27,6 +27,7 @@ recommonmark = "*"
 requests-mock = "*"
 sphinx-rtd-theme = "*"
 pytest = "*"
+pytest-cov = "*"
 
 [requires]
 python_version = "3"

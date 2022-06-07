@@ -29,3 +29,4 @@ jobs:
       run:
         make run-tests
     - uses: codecov/codecov-action@v2
+      files: coverage.xml

@@ -3,7 +3,7 @@ S3_BUCKET="ece229-dataset"
 all: local-deploy
 
 run-tests: deps dev-deps
-	pipenv run pytest --cov=carsreco
+	pipenv run pytest --cov=carsreco --cov-report xml
 
 deploy:
 	bash scripts/deploy.sh
