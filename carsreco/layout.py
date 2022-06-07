@@ -1,3 +1,14 @@
+"""
+This module contains the (html) layout of the application. It also contains helper functions
+used to generate the dynamic layout of the application.
+
+This module does not contain the plots definitions, those are created in the :module:`carsreco.interactive_plots` module.
+
+It also does not contan the application logic, this is contained in :module:`carsreco.dashboard`
+"""
+
+from __future__ import annotations
+
 import functools as ft
 
 from dash.development.base_component import Component
@@ -22,11 +33,31 @@ Dropdown=ft.partial(dcc.Dropdown, placeholder='Select an attribute...', style=dr
 Tabs=ft.partial(dcc.Tabs, style=tabs_style)
 Label = ft.partial(html.Label, style=label_style)
 
-def Slider(*args, **kwargs) :
+def Slider(*args, **kwargs) -> html.Div:
+    """create a slider
+
+    Creates a :class:`html.Div` containing a :class:`dcc.Slider`, with the right styling
+
+    Returns:
+        html.Div: said div
+    """
     return html.Div( dcc.RangeSlider(*args, **kwargs), style=slider_style )
 
 
-def text_image(item, url) -> tuple[html.H3, html.Img]:
+def text_image(item: list, url: str) -> tuple[html.H3, html.Img]:
+    """Generates markup for a prediction result
+
+    Generates the text representing a prediction in a h3, as well as a tag containing 
+    the image from the url given.
+    This is used to display predictions from the model.
+
+    Args:
+        item: a list containing one item of the predictions results
+        url: the url of the corresponing image
+
+    Returns:
+        tuple[html.H3, html.Img]: [TODO:description]
+    """
     return (
         html.H3(
         f'Manufacturer name: {item[0]}, Model name: {item[1]}, Find it at market in {item[2]} hrs', 

@@ -47,8 +47,9 @@ def cats_and_nums(df) -> tuple[list[str], list[str]]:
         df: the dataframe
 
     Returns:
-        cats: the list of categorical columns
-        nums: the list of numerical columns
+        tuple containing 
+            - cats: the list of categorical columns
+            - nums: the list of numerical columns
     """
     cats = df.select_dtypes(['object', 'category']).columns
     nums = df.select_dtypes(np.number).columns
