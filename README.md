@@ -1,5 +1,7 @@
 # ECE229-project: Personalized used car rating & recommendations
 
+[![codecov](https://codecov.io/gh/nephanth/ECE229-project/branch/main/graph/badge.svg?token=S38ZRIAGSS)](https://codecov.io/gh/nephanth/ECE229-project)
+
 Personalized used car rating & recommendations
 
 We use [Pipenv](https://github.com/pypa/pipenv) for dependency management. You will need to have that installed to run any of the commands below. You can install it with
