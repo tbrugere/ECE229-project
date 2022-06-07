@@ -1,7 +1,7 @@
 ''' This file tests the functions in predction.py
 To generate a html coverage report, run
 pytest --cov-report html:cov_html
-        --cov=prediction'''
+        --cov=carsreco'''
 import pytest
 import numpy as np
 import pandas as pd
@@ -59,7 +59,4 @@ def test_get_CI(setup):
     predict = prediction.IntervalPricePrediction(mock_df)
     predict.model_params = predict.estimate_parameters()
     results = predict.get_CI(18000, 19000)
-    # assert len(results) == 3
     assert len(results[0]) == 5
-    # assert np.allclose(list(results[0]), list(('abc','camry', 0.1103319873536836*0.5, 1.787753005021224, 260.48089681955963)), atol=1e-05)
-    
