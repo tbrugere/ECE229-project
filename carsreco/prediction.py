@@ -4,7 +4,7 @@ from scipy.stats import norm
 from scipy.stats import expon
 
 class IntervalPricePrediction:
-    """The class respresenting predictions for time ranges along with confidence intervals.
+    """The class representing predictions for time ranges along with confidence intervals.
 
     Args:
         df (pd.DataFrame): The dataframe to run the prediction on.
