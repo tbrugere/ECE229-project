@@ -57,6 +57,28 @@ def test_cats_and_nums(setup):
     assert isinstance(cats, pd.Index) and set(cats).issubset(mock_df.columns)
     assert isinstance(nums, pd.Index) and set(nums).issubset(mock_df.columns)
 
+def test_price_trendency_plot(setup):
+    """Tests the price_trendency_plot function.
+
+    Args:
+        setup (pd.DataFrame): The test dataframe.
+    """
+    mock_df = setup
+    edata = data.interactive_plots_preprocess(mock_df)
+    overlay = interactive_plots.price_trendency_plot(edata)
+    assert isinstance(overlay, hv.core.overlay.Overlay)
+
+def test_price_tredency_plot_given(setup):
+    """Tests the price_tredency_plot_given function.
+
+    Args:
+        setup (pd.DataFrame): The test dataframe.
+    """
+    mock_df = setup
+    edata = data.interactive_plots_preprocess(mock_df)
+    overlay = interactive_plots.price_tredency_plot_given(edata)
+    assert isinstance(overlay, hv.element.chart.Curve)
+
 def test_count_plot(setup):
     """Tests the count_plot function.
 
