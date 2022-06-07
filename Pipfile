@@ -24,6 +24,7 @@ ipython = "*"
 awsebcli = "*"
 sphinx-argparse = "*"
 recommonmark = "*"
+requests-mock = "*"
 sphinx-rtd-theme = "*"
 pytest = "*"
 
