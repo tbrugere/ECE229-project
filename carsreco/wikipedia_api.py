@@ -1,6 +1,8 @@
 """Get images and descriptions of things from wikipedia
 """
 
+from __future__ import annotations
+
 from typing import Optional
 
 from dataclasses import dataclass, field
