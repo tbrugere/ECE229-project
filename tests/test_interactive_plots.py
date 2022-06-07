@@ -7,7 +7,6 @@ pytest --cov-report html:cov_html
 import pytest
 
 import holoviews as hv
-import plotly.express as px
 from plotly.graph_objs import Figure
 
 import pandas as pd
@@ -29,7 +28,7 @@ def setup():
     return mock_df
 
 def test_get_data(setup):
-    """Tests the interactive_plots_preprocess function.
+    """Tests the get_data function.
 
     Args:
         setup (pd.DataFrame): The test dataframe.
