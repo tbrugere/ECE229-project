@@ -4,6 +4,11 @@ colors = {
     'background': '#111111',
     'text': '#7FDBFF'
 }
+
+tabs_style = {
+'margin-top': '0em', 'margin-bottom': '0em'
+}
+
 tab_style = {
     'borderTop': '1px solid #292841',
     'borderBottom': '1px solid #292841',
@@ -47,7 +52,6 @@ H3_style = {
     'float': 'center',
     'text-align': 'center',
     'margin-top': '1em',
-    # 'margin-bottom': '1em',
 }
 
 H3_style_2 = {
@@ -58,7 +62,6 @@ H3_style_2 = {
     'float': 'center',
     'text-align': 'center',
     'margin-top': '2em',
-    # 'margin-bottom': '1em',
 }
 
 label_style = {
@@ -96,11 +99,12 @@ plot_style = {
 container = {"display": "flex", "flex-direction": "column"}
 child = {'justify-content': 'center', "align-items": "center"}
 
-# plot_div_style = {'float': 'center', **child, **container}
 
 toplevel_div_style = {'margin-left':'2em', 'margin-right':'2em', **container}
+div_style = {"width": "100%"}
 level2_div_style = {"width": "100%"}
 level3_div_style = {"width": "100%"}
 plot_div_style = {"width": "100%"}
 
+text_image_style= {'color': '#b8bbbe', 'font-size': '24px', 'font-family': 'Optima, sans-serif','font-weight':'bold'}
 

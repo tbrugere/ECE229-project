@@ -4,8 +4,15 @@ import pandas as pd
 
 from . import prediction
 
-df = pd.read_csv('data/preprocessed.csv', index_col=0, parse_dates=["posting_date"])
-assert isinstance(df, pd.DataFrame)
+def get_data() -> pd.DataFrame:
+    """Returns the dataframe from the dataset data/preprocessed.csv
+
+    Returns:
+        pd.DataFrame: the imported dataframe
+    """
+    df = pd.read_csv('data/preprocessed.csv', index_col=0, parse_dates=["posting_date"])
+    assert isinstance(df, pd.DataFrame)
+    return df
 
 #------------------------------------------------------------------------------------
 # PREPROCESSING
@@ -33,6 +40,17 @@ def interactive_plots_preprocess(df):
 
     return edata
 
-edata = interactive_plots_preprocess(df)
-cats, nums = df.select_dtypes(['object', 'category']).columns, df.select_dtypes(np.number).columns
-model = prediction.IntervalPricePrediction(df)
+def cats_and_nums(df) -> tuple[list[str], list[str]]:
+    """returns categorical / num columns
+
+    Args:
+        df: the dataframe
+
+    Returns:
+        cats: the list of categorical columns
+        nums: the list of numerical columns
+    """
+    cats = df.select_dtypes(['object', 'category']).columns
+    nums = df.select_dtypes(np.number).columns
+    return cats, nums
+
