@@ -193,3 +193,27 @@ def statewise_prices(df):
                            color_continuous_scale="Blues"
                           )
     return fig
+
+def plot_pie(df, col, cats, lim = 15):
+    """Plots the pie chart of the categorical variable col.
+
+    The col variable must be the name of a categorical column of the dataframe.
+    From there, it will create a pie chart of the most frequent values up to lim.
+    All other values will be assigned to the 'Other' group.
+
+    Args:
+        df: The dataframe
+        col (str): The name of the categorical column.
+        cats: The set of categorical columns (used only for checks)
+        lim (int): The top number of values to group by.
+    """
+    assert col in cats
+
+    values = df[col].dropna().value_counts().sort_values(ascending=False)
+    topk = min(len(values), lim)
+    top_values = values.nlargest(topk)
+    if len(values) > lim: top_values['other'] = values.nsmallest(values.size - topk).sum()
+    title = 'Number of cars by %s:' % (col.replace('_', ' '))
+    fig = px.pie(values, values=top_values.values, names=top_values.index, title=title,color_discrete_sequence=px.colors.sequential.RdBu)
+
+    return fig

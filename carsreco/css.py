@@ -106,4 +106,5 @@ level2_div_style = {"width": "100%"}
 level3_div_style = {"width": "100%"}
 plot_div_style = {"width": "100%"}
 
+text_image_style= {'color': '#b8bbbe', 'font-size': '24px', 'font-family': 'Optima, sans-serif','font-weight':'bold'}
 

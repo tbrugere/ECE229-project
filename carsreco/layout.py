@@ -10,12 +10,29 @@ from .interactive_plots import get_count_cols, get_price_trendency_cols, \
     get_price_trendency_given_cols, statewise_prices
 from . import prediction
 
+###############################################
+#Apply CSS without CSS
+###############################################
+
 Div = ft.partial(html.Div, style=div_style)
 H1 = ft.partial(html.H1, style=H1_style)
 H3 = ft.partial(html.H3, style=H3_style)
 Tab = ft.partial(dcc.Tab, style=tab_style, selected_style=tab_selected_style)
 Dropdown=ft.partial(dcc.Dropdown, placeholder='Select an attribute...', style=dropdown_style )
 Tabs=ft.partial(dcc.Tabs, style=tabs_style)
+Label = ft.partial(html.Label, style=label_style)
+
+def Slider(*args, **kwargs) :
+    return html.Div( dcc.RangeSlider(*args, **kwargs), style=slider_style )
+
+
+def text_image(item, url) -> tuple[html.H3, html.Img]:
+    return (
+        html.H3(
+        f'Manufacturer name: {item[0]}, Model name: {item[1]}, Find it at market in {item[2]} hrs', 
+        style=text_image_style),
+        html.Img(src=url, style={'height': '40%', 'width': '40%'})
+    )
 
 
 def dropdown_and_plot(l: list, id: str, plot_height=None) -> html.Div:
@@ -43,12 +60,16 @@ def dropdown_and_plot(l: list, id: str, plot_height=None) -> html.Div:
 
 class Layout():
     """Layout of the application
+
+
+    Attributes:
+        full_layout: the layout of the entire page
+
+        tab_1: the layout fo the first tab
+        tab_2: the layout fo the second tab
     """
 
     full_layout: Component
-    dropdown_plot1: Component
-    dropdown_plot2: Component
-    dropdown_out: Component
 
     tab_1: Component
     tab_2: Component
@@ -74,11 +95,11 @@ class Layout():
             ]
         )
 
-        self.dropdown_plot1 = dropdown_and_plot(li1, "1", 430)
+        dropdown_plot1 = dropdown_and_plot(li1, "1", 430)
 
-        self.dropdown_plot2 = dropdown_and_plot(li2, "2", 900)
+        dropdown_plot2 = dropdown_and_plot(li2, "2", 900)
 
-        self.dropdown_out = dropdown_and_plot(li_out, "-out")
+        dropdown_out = dropdown_and_plot(li_out, "-out")
 
 
         # THIS IS NOT THE WHOLE LAYOUT BUT THE LAYOUT OF FIRST TAB
@@ -88,11 +109,11 @@ class Layout():
             children=[
                     Div([
                         H3("The Market Share Overview:"),
-                        self.dropdown_plot2,
+                        dropdown_plot2,
                     ]),
                     Div([
                         H3("Average Price Trend over Time:"),
-                        self.dropdown_plot1
+                        dropdown_plot1
                     ]),
 
                     Div([
@@ -109,7 +130,7 @@ class Layout():
                     ]),
                     Div([
                         H3("Explore the Price Fluctuation of Your Interest:"),
-                        self.dropdown_out
+                        dropdown_out
                     ]),
             ]
         )
@@ -119,45 +140,41 @@ class Layout():
             children=[
                 html.Div(
                     children=[
-                        html.Label('Select your preferred model: ', style=label_style),
+                        Label('Select your preferred model: '),
                         dcc.Dropdown(
                             list(p.get_manufacturer_names()),
                             id='model-dd',
                             placeholder='Select an attribute...',
                             style={**dropdown_style, "margin":"auto"}
                         ),
-                        html.Label('Select your preferred year range: ', style=label_style), # next available witnin 
-                        html.Div(dcc.RangeSlider(
-                            id='year-range-slider',
-                            min=1999,
-                            max=2020,
-                            value=[2005, 2015],
-                            allowCross=False,
-                            marks={int(i):str(i) for i in range(1999, 2020, 5)},
-                            tooltip={"placement": "bottom", "always_visible": True}
+                        Label('Select your preferred year range: '), 
+                        Slider(
+                                id='year-range-slider',
+                                min=1999,
+                                max=2020,
+                                value=[2005, 2015],
+                                allowCross=False,
+                                marks={int(i):str(i) for i in range(1999, 2020, 5)},
+                                tooltip={"placement": "bottom", "always_visible": True}
                         ),
-                                 style=slider_style
-                                 ),
-                        html.Label('Select your preferred price range ($): ', style=label_style),
-                        html.Div(dcc.RangeSlider(
+                        Label('Select your preferred price range ($): '),
+                        Slider(
                             id='price-range-slider',
                             min=3000,
                             max=80000,
                             value=[15000, 25000],
                             allowCross=False,
                             tooltip={"placement": "bottom", "always_visible": True}
-                        ),
-                                 style=slider_style
-                                 ),
+                        )
                     ], 
                     id="preferences-div", 
                     style={**level2_div_style, **container, "justify-content": "center"}
                 ),
                 html.Div(
                     children=[
-                        html.H1(children='Recommendation to You', style=H3_style_2),
-                        html.Hr(), 
-                        html.Div(id='pred-output')
+                        H1(children='Recommendation to You'),
+                        html.Hr(),
+                        Div(id='pred-output')
                     ], 
                     style={'textAlign': 'center', 'justify-content': 'center', 'margin-top': '3em'}),
             ], 

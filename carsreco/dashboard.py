@@ -1,5 +1,6 @@
 """
-This file contains the web application logic
+This file contains the web application logic.
+In other words, all callbacks for the dashboard components
 """
 import dash
 import dash_core_components as dcc
@@ -12,7 +13,7 @@ import pandas as pd
 import plotly.express as px
 
 from .data import df, model as p, edata, cats, nums
-from .interactive_plots import price_trendency_plot, count_plot, price_tredency_plot_given,  get_price_trendency_given_vals
+from .interactive_plots import price_trendency_plot, count_plot, price_tredency_plot_given,  get_price_trendency_given_vals, plot_pie
 from . import prediction
 from .layout import *
 from .wikipedia_api import WikipediaPage
@@ -27,29 +28,9 @@ layout = Layout(df, p)
 app.layout = layout.full_layout
 
 
-def plot_pie(col, lim = 15):
-    """Plots the pie chart of the categorical variable col.
-
-    The col variable must be the name of a categorical column of the dataframe.
-    From there, it will create a pie chart of the most frequent values up to lim.
-    All other values will be assigned to the 'Other' group.
-
-    Args:
-        col (str): The name of the categorical column.
-        lim (int): The top number of values to group by.
-    """
-    assert col in cats
-
-    values = df[col].dropna().value_counts().sort_values(ascending=False)
-    topk = min(len(values), lim)
-    top_values = values.nlargest(topk)
-    if len(values) > lim: top_values['other'] = values.nsmallest(values.size - topk).sum()
-    title = 'Number of cars by %s:' % (col.replace('_', ' '))
-    fig = px.pie(values, values=top_values.values, names=top_values.index, title=title,color_discrete_sequence=px.colors.sequential.RdBu)
-
-    return fig
-
-#***************************** DropDown
+################################################################
+# Dropdown functions
+################################################################
 
 def dropdown_select(k):
     components = to_dash(app, [price_trendency_plot(edata, k)])
@@ -63,7 +44,7 @@ def dropdown_count(k):
             html.Div(
                 dcc.Graph(
                 id = "dd-pie",
-                figure = plot_pie(k),
+                figure = plot_pie(df, k, cats),
                 style={'justify-content': 'center', 'margin-top':'1em'})
     )])
     return plot
@@ -125,9 +106,6 @@ def update_output(value):
 
 
 
-def text_image(lisa,urll,i):
-    return html.H1('Manufacturer name: ' + lisa[i][0] + ", Model name: " + str(lisa[i][1]) + ", Find it at market in  " + str(lisa[i][3:]) + " hrs",
-            style={'color': '#b8bbbe', 'font-size': '24px', 'font-family': 'Optima, sans-serif','font-weight':'bold'}), html.Img(src=urll[i], style={'height': '40%', 'width': '40%'})
 
 
 @app.callback(
@@ -140,9 +118,9 @@ def show_success_probability(model,year,price):
         recommended_cars = p.get_CI(price[0], price[1])
     else:
         recommended_cars = p.get_CI(price[0], price[1], [model])
-    lisa = [list(c) for c in recommended_cars]
+    predictions = [list(c) for c in recommended_cars]
     urll = []
-    for item in lisa:
+    for item in predictions:
         page = WikipediaPage.from_query(item[0]+"_"+item[1])
         urll.append(page.get_thumbnail()['source'])
 
@@ -150,9 +128,9 @@ def show_success_probability(model,year,price):
 
     childs = []
     childs.append(ccc)
-    if lisa:
-        for i in range(len(lisa)):
-            a,b = text_image(lisa,urll,i)
+    if predictions:
+        for pred, url in zip(predictions, urll):
+            a,b = text_image(pred, url)
             childs.append(a)
             childs.append(b)
     else:
