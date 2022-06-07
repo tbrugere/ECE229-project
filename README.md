@@ -107,3 +107,22 @@ this will:
 - install dependencies on the server (using the `Pipfile`)
 - download and preprocess the data on the server
 - run the dashboard on the server
+
+## Testing
+
+### With github actions (CI/CD)
+
+If you push the code onto the `main` branch on github, it will automatically run tests
+and add a cute badge to the Readme.
+
+### Locally
+
+The tests can be run using
+
+```console
+$ make run-tests
+```
+
+You will need the dataset
+
+
