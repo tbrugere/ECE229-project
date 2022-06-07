@@ -4,8 +4,6 @@ import holoviews as hv
 import numpy as np
 import pandas as pd
 
-from . import prediction
-
 def get_data() -> pd.DataFrame:
     """Returns the dataframe from the dataset data/preprocessed.csv
 
