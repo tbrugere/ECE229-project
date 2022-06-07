@@ -19,10 +19,10 @@ print(os.path.abspath('.'))
 
 # -- Project information -----------------------------------------------------
 
-project = 'ECE 143 project'
+project = 'ECE 229 project'
 # copyright = '2021, Tristan Brugère'
 copyright = ''
-author = 'Tristan Brugère, Jiayuan Li, Jiayue Li, Rajeswari Mahapatra, Jiaqi Si'
+author = 'Tristan Brugere, Yongxing Chen, Andrea Kang, Zhiyin Liu, Aarthy Ramesh, Shaohua Zhang, Yifei Zhao'
 
 
 # -- General configuration ---------------------------------------------------
