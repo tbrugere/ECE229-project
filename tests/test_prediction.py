@@ -54,5 +54,4 @@ def test_get_CI(setup):
     predict = prediction.IntervalPricePrediction(mock_df)
     predict.model_params = predict.estimate_parameters()
     results = predict.get_CI(18000, 19000)
-    assert len(results) == 2
     assert len(results[0]) == 5
