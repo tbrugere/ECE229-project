@@ -2,8 +2,6 @@
 
 This package contains all the code that supports running the dashboard.
 
-
-
 """
 
 from .dashboard import create_app
@@ -12,7 +10,7 @@ import flask
 def create_server() -> flask.Flask:
     """Creates the server object
 
-    Creates the dashboard using 
+    Creates the dashboard using :func:`carsreco.dashboard.create_app`
 
     Returns:
         flask.Flask: Flask object used by the wsgi to run the dashboard
