@@ -1,7 +1,7 @@
 ''' This file tests the functions in predction.py
 To generate a html coverage report, run
 pytest --cov-report html:cov_html
-        --cov=prediction'''
+        --cov=carsreco'''
 import pytest
 import numpy as np
 import pandas as pd
@@ -26,8 +26,8 @@ def test_estimate_parameters_general(setup):
     mock_df = setup
     predict = prediction.IntervalPricePrediction(mock_df)
     params = predict.estimate_parameters()
-    # assert params['posting_date']['max'].dtype == 'datetime64[ns, UTC]'#TODO
-    # assert params['posting_date']['min'].dtype == 'datetime64[ns, UTC]'
+    assert params['posting_date']['max'].dtype == '<M8[ns]'
+    assert params['posting_date']['min'].dtype == '<M8[ns]'
     assert sum(params['price']['std'] < 0) == 0
     assert sum(params['model']['count'] < 0) == 0
 
@@ -54,7 +54,5 @@ def test_get_CI(setup):
     predict = prediction.IntervalPricePrediction(mock_df)
     predict.model_params = predict.estimate_parameters()
     results = predict.get_CI(18000, 19000)
-    assert len(results) == 3
+    assert len(results) == 2
     assert len(results[0]) == 5
-    # assert np.allclose(list(results[0]), list(('abc','camry', 0.1103319873536836*0.5, 1.787753005021224, 260.48089681955963)), atol=1e-05)
-    
