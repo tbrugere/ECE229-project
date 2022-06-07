@@ -1,4 +1,4 @@
-''' This file tests the functions in predction.py
+''' This file tests the functions in wikipedia_api.py
 To generate a html coverage report, run
 pytest --cov-report html:cov_html
         --cov=carsreco'''
