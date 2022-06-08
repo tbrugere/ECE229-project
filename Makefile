@@ -1,4 +1,5 @@
 S3_BUCKET="ece229-dataset"
+S3_DOCS_BUCKET="carsreco-doc"
 
 all: local-deploy
 
@@ -46,6 +47,10 @@ data/preprocessed.csv: data/vehicles_cleaned_imputed.csv data/ deps
 #-----------------------------------------------------------
 # Documentation
 # ---------------------------------------------------------
+
+
+publish-docs: docgen
+	aws s3 cp "docs/build/html/" s3://$(S3_DOCS_BUCKET) --recursive
 
 docgen: docs dev-deps
 	pipenv run  $(MAKE) -C docs html

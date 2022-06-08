@@ -1,6 +1,7 @@
 # ECE229-project: Personalized used car rating & recommendations
 
 [![codecov](https://codecov.io/gh/nephanth/ECE229-project/branch/main/graph/badge.svg?token=S38ZRIAGSS)](https://codecov.io/gh/nephanth/ECE229-project)
+![tests](https://github.com/nephanth/ECE229-project/actions/workflows/main.yaml/badge.svg)
 
 Personalized used car rating & recommendations
 
@@ -9,7 +10,12 @@ We use [Pipenv](https://github.com/pypa/pipenv) for dependency management. You w
 $ pip install --user pipenv
 ```
 
-## Building the documentation
+## Documentation
+
+The documentation is available [here](http://carsreco-doc.s3-website-us-west-1.amazonaws.com/).
+It is automatically built when deploying to the `main` branch
+
+### Building the documentation locally
 
 To build the documentation with `sphinx`, use the command
 
