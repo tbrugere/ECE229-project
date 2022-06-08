@@ -1,7 +1,8 @@
 # ECE229-project: Personalized used car rating & recommendations
 
 [![codecov](https://codecov.io/gh/nephanth/ECE229-project/branch/main/graph/badge.svg?token=S38ZRIAGSS)](https://codecov.io/gh/nephanth/ECE229-project)
-![tests](https://github.com/nephanth/ECE229-project/actions/workflows/main.yaml/badge.svg)
+
+![tests](https://github.com/nephanth/ECE229-project/actions/workflows/main.yml/badge.svg)
 
 Personalized used car rating & recommendations
 
