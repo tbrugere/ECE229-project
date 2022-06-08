@@ -121,6 +121,8 @@ this will:
 If you push the code onto the `main` branch on github, it will automatically run tests
 and add a cute badge to the Readme.
 
+**The coverage report can be accessed by clicking the codecov badge on top of the readme**
+
 ### Locally
 
 The tests can be run using
